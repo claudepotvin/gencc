@@ -497,23 +497,6 @@ width: 100%;
       return str.replace(/[&��������������������������������ܟ��]/g, ch => map[ch] || ch);
     }
 
-//   const licences_URL = {
-//     "1": "https://creativecommons.org/licenses/by/4.0/deed.fr",
-//     "2": "https://creativecommons.org/licenses/by-sa/4.0/deed.fr",
-//     "3": "https://creativecommons.org/licenses/by-nc/4.0/",
-//     "4": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
-//     "5": "https://creativecommons.org/licenses/by-nd/4.0/deed.fr",
-//     "6": "https://creativecommons.org/licenses/by-nc-nd/4.0/"
-//   };
-// const licences_ic = {
-//     "1": "https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by.png",
-//     "2": "https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png",
-//     "3": "http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc.png",
-//     "4": "http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png",
-//     "5": "https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nd.png",
-//     "6": "http://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-nd.png"
-//   };
-
   const licences = {
   "1": {
     url: "https://creativecommons.org/licenses/by/4.0/deed.fr",
@@ -693,71 +676,6 @@ function zone() {
 }
 
 
-// function InitialiserCit() {
-//         const LeType = getSelectedType(); //quel type d'oeuvre     
-//  //réinitiaisation Citation et URLs
-//         document.getElementById('outCreateursCit').innerHTML = "Créateurs"; 
-//         document.getElementById('outAnneeCit').innerHTML = "Année"; 
-//         document.getElementById('outTitreCit').innerHTML = "Titre de l&#339;uvre";               
-//           document.getElementById('outEditCit').innerHTML = "Organisation éditrice"; 
-        
-//         const outLicenceLink = document .getElementById('outLicenceLink');
-//         if (outLicenceLink) {
-//             outLicenceLink.innerHTML = "&laquo; Licence à choisir &raquo;"; 
-//             outLicenceLink.removeAttribute('href');
-//         } 
-//         const outLinkCit = document.getElementById('outLinkCit');
-//         if (outLinkCit) {
-//             outLinkCit.innerHTML = "DOI ou URL"; 
-//             outLinkCit.removeAttribute('href');
-//         } 
-//         const outLicenceLinkCit = document.getElementById('outLicenceLinkCit');
-//         if (outLicenceLinkCit) {
-//             outLicenceLinkCit.innerHTML = "&laquo; Licence à choisir &raquo;"; 
-//             outLicenceLinkCit.removeAttribute('href');
-//         } 
-//         }   
-
-// function FormValider(z) {
-
-// ["titre_url", "titre_url0", "createurs_profil", "createurs_profil0"]
-//   .forEach(id => {
-//     const el = document.getElementById(id);
-//     if (el) el.classList.remove("highlight");
-//   });
-
-//   const baseChamps = ["titre", "tabAuteursL1", "annee", "choix_lic"];
-//   const champsMap = {
-//     1: [...baseChamps],
-//     2: [...baseChamps, "titre0", "tabAuteurs0L1", "annee0", "choix_lic0", "AdaptIn"],
-//     3: [...baseChamps, "titre0", "tabAuteurs0L1", "annee0", "choix_lic0", "AdaptIn"],
-//     4: [...baseChamps, "AdjustIn"]
-//   };
-
-//   let valide = true;
-//   const champs = (champsMap[z] || []).map(id => document.getElementById(id));
-//   champs.forEach(champ => {
-//     if (!champ) return; // sécurité si un id est manquant
-//     champ.classList.remove("highlight");
-//     if (!champ.value.trim()) {
-//       champ.classList.add("highlight");
-//       valide = false;
-//     }
-//   }
-// );
-
-
-//   if (!valide) {
-//     const msg = (z === 1 || z === 4)
-//       ? "Veuillez remplir tous les champs obligatoires (*)"
-//       : "Veuillez remplir tous les champs obligatoires (*) dans les 2 onglets";
-//     alert(msg);
-//   }
-
-//   return valide;
-// }
-
-
 function FormValider(z) {
   ["titre_url", "titre_url0", "createurs_profil", "createurs_profil0"]
     .forEach(id => {
@@ -852,7 +770,7 @@ const mappings = {
     { inId: "annee", outId: "outAnnee", defaultText: "Année" },
  //Oeubre d'origine   
     { inId: "titre0", outId: "outTitre0", defaultText: "Titre de l'œuvre" },
-    { inId: "createurs_tableAuteurs", outId: "outCreateurs0", defaultText: "Créateurs" },
+    { inId: "createurs_tableAuteurs0", outId: "outCreateurs0", defaultText: "Créateurs" },
     { inId: "annee0", outId: "outAnnee0", defaultText: "Année" },
 // Citation
    { inId: "createursAPA_tableAuteurs", outId: "outCreateursCit", defaultText: "Créateurs" },
@@ -1042,6 +960,53 @@ function AjoutePointEspace(id) {
 
 
 
+// function AjoutePointEspace(id) {
+//   const el = document.getElementById(id);
+//   if (!el) return;
+
+//   let contenu = el.innerHTML.trim();
+
+//   if (contenu.length === 0) return;
+
+//   // Si ça finit par ". " ou ". " (espace insécable), on ne touche à rien
+//   if (contenu.endsWith(". ") || contenu.endsWith(".\u00A0")) {
+//     return;
+//   }
+
+//   // Si ça finit par un point simple ".", on ajoute "&nbsp;"
+//   if (contenu.endsWith(".")) {
+//     el.innerHTML = contenu + "&nbsp;";
+//     return;
+//   }
+
+//   // Sinon, on ajoute ".&nbsp;"
+//   el.innerHTML = contenu + ".&nbsp;";
+// }
+
+
+// function AjoutePointEspace(id) {
+//   const el = document.getElementById(id);
+//   if (!el) return;
+
+//   let contenu = el.innerHTML.trim();
+
+//   if (contenu.length === 0) return;
+
+//   // Si le contenu se termine par deux points "..", on en retire un
+//   if (contenu.endsWith("..")) {
+//     contenu = contenu.slice(0, -1); // retire un seul point
+//   }
+
+//   // Vérifie si ça ne finit pas déjà par ". " (avec espace insécable)
+//   if (!contenu.endsWith(". ") && !contenu.endsWith(".\u00A0")) {
+//     el.innerHTML = contenu + ".\u00A0"; // . + espace insécable
+//   } else {
+//     el.innerHTML = contenu;
+//   }
+// }
+
+
+
 function openTab(LeTab, btn) {
   // cacher tous les contenus
  boutonActif = btn; 
@@ -1158,24 +1123,7 @@ function openTab(LeTab, btn) {
                 <input type="url" id="titre_url" class="decale" placeholder="Ex. https://www.enseigner.ulaval.ca/pedagogie/bonnes-pratiques-denseignement">
 
                 <label for="createurs">*Identification des autrices et auteurs</label>
-<!-- <table id="tableAuteurs">
-  <thead>
-    <tr>
-      <th>Nom(s)</th>
-      <th>Prénom(s)</th>
-      <th>Organisation</th>
-      <th>+ Ligne</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><input type="text" value="" placeholder="Ex. Dupont"></td>
-      <td><input type="text" value="" placeholder="Ex. Josette"></td>
-      <td><input type="checkbox"></td>
-      <td class="add-row"><strong>+</strong></td>
-    </tr>
-  </tbody>
-</table> -->
+
 
 <!-- ***************************************** -->
 <!-- <h2>Table Auteurs 1</h2> -->
@@ -1214,21 +1162,6 @@ function openTab(LeTab, btn) {
 
 
 <!-- ************************************** -->
-
-<!-- <h3>Sortie 1 (Prénom avant Nom)</h3>
-<textarea id="createurs" readonly></textarea> 
-<textarea id="createurs" readonly></textarea>
-
-<h3>Sortie 2 (Style APA)</h3>
-<textarea id="createursAPA" readonly></textarea>-->
-
-                <!-- <input type="text" id="createurs" placeholder="Ex. Marie Tremblay"> -->
-
-                <!-- <label for="createursPers">*Noms et prénoms des cr&eacute;ateurs (séparés par virgule, 1 par ligne)</label>
-                <input type="text" id="createursPers" placeholder="Ex.  Tremblay, Marie">
-
-                <label for="createursOrg">*Nom des organisations (1 par ligne)</label>
-                <input type="text" id="createursOrg" placeholder="Université Laval"> -->
 
                 <label for="createurs_profil" class="decale">URL ou adresse courriel de contact</label>
                 <input type="text" id="createurs_profil" class="decale" placeholder="http://sse.ulaval.ca ou sse@ulaval.ca">
@@ -1434,7 +1367,7 @@ function openTab(LeTab, btn) {
     <table class="cc-table">
   <tr>
     <td>
-            <span id="outCreateursCit" class="quote">Créateurs</span>.&nbsp;
+            <span id="outCreateursCit" class="quote">Créateurs</span>&nbsp;
             (<span id="outAnneeCit">An</span>).&nbsp;     
             <span id="outTitreCit" class="quote">Titre de l'&#339;uvre</span>.&nbsp;
             <span id="outEditCit" class="quote">Organisation éditrice.</span>
