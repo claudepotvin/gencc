@@ -1,9 +1,11 @@
 
 <!DOCTYPE html>
 <!-- GÉNÉRATEUR D'ATTRIBUTION DE LICENCES CREATIVE COMMONS ET GÉNÉRATEUR DE CITATIONS APA
-v 1,0 alpha
+v alpha-r
 Copyright (C) 2026 Claude Potvin (https://www.linkedin.com/in/claude-potvin-b506a471/)
-# Assistance à la programmation réalisée avec un robot conversationnel (Microsoft Copilot).
+# Assistance à la programmation réalisée avec un robot conversationnel (Microsoft Copilot)
+Lien fonctionnel : https://claudepotvin.github.io/gencc/
+Sources : https://github.com/claudepotvin/gencc 
 
 Cette appli demande à l'utilisateur de faire un choix selon 3 possibilités selon que l'oeuvre est:
 Originale : 1 onglet à remplir
@@ -380,35 +382,6 @@ width: 100%;
   z-index: 1000;
 }
 
-
-/*
-.cc-small {
-  width: 186px;
-  height: 123px;
- 
-} 
- */
-/* 
-.cc-small {
-  width: 50%;
-  height: auto;
-} 
-*/
-/*
-.cc-small { transform: scale(0.5); transform-origin: top left; display: inline-block; }
- */
-
-/* 
-.cc-icon {
-  display: inline-block;
-  transform: scale(0.4);
-  transform-origin: top left;
-}
-
-.cc-icon img {
-  display: block; 
-}
- /* */
 
 .cc-table {
   border-collapse: collapse;
@@ -960,51 +933,6 @@ function AjoutePointEspace(id) {
 
 
 
-// function AjoutePointEspace(id) {
-//   const el = document.getElementById(id);
-//   if (!el) return;
-
-//   let contenu = el.innerHTML.trim();
-
-//   if (contenu.length === 0) return;
-
-//   // Si ça finit par ". " ou ". " (espace insécable), on ne touche à rien
-//   if (contenu.endsWith(". ") || contenu.endsWith(".\u00A0")) {
-//     return;
-//   }
-
-//   // Si ça finit par un point simple ".", on ajoute "&nbsp;"
-//   if (contenu.endsWith(".")) {
-//     el.innerHTML = contenu + "&nbsp;";
-//     return;
-//   }
-
-//   // Sinon, on ajoute ".&nbsp;"
-//   el.innerHTML = contenu + ".&nbsp;";
-// }
-
-
-// function AjoutePointEspace(id) {
-//   const el = document.getElementById(id);
-//   if (!el) return;
-
-//   let contenu = el.innerHTML.trim();
-
-//   if (contenu.length === 0) return;
-
-//   // Si le contenu se termine par deux points "..", on en retire un
-//   if (contenu.endsWith("..")) {
-//     contenu = contenu.slice(0, -1); // retire un seul point
-//   }
-
-//   // Vérifie si ça ne finit pas déjà par ". " (avec espace insécable)
-//   if (!contenu.endsWith(". ") && !contenu.endsWith(".\u00A0")) {
-//     el.innerHTML = contenu + ".\u00A0"; // . + espace insécable
-//   } else {
-//     el.innerHTML = contenu;
-//   }
-// }
-
 
 
 function openTab(LeTab, btn) {
@@ -1398,7 +1326,7 @@ function openTab(LeTab, btn) {
 
   <div id="ref" class="content" style="display:none;">
     <ul>
-      <li><a href="http://Recommended practices for attribution" target="_blank">Recommended practices for attribution (Creative Commons)</a></li>    
+      <li><a href="https://wiki.creativecommons.org/wiki/Recommended_practices_for_attribution" target="_blank">Recommended practices for attribution (Creative Commons)</a></li>    
       <li><a href="https://www.uottawa.ca/bibliotheque/droit-auteur/quest-ce-que-droit-auteur/comment-attribuer-du-contenu-license-creative-commons-pratiques-exemplaires" target="_blank">Comment attribuer du contenu sous license CC (U. Ottawa)</a></li>
       <li><a href="https://www.bda.ulaval.ca/utilisation-libre/oeuvres-sous-licence-creative-commons/" target="_blank">Oeuvres sous licence CC (U. Laval)</a></li>
       <li><a href="https://fabriquerel.org/ressources/licences/" target="_blank">Les licences (fabriqueREL)</a></li>
