@@ -15,6 +15,8 @@ Ajustée : 1 onglet à remplir
 Onglet 1 : pas de numéro dans les variables (oeuvre créée ou ajustée)
 Onglet 2 : numéro 0 ajouté dans les variables (oeuvre d'origine)
 
+Vérifie l'adéquation de la licence d'une oeuvre adaptée.
+
 *******************************************************
 LICENCE
 Copyright (C) 2026 Claude Potvin (https://www.linkedin.com/in/claude-potvin-b506a471/)
@@ -451,6 +453,10 @@ width: 100%;
   color: red;
 }
 
+.ok  { background: #d4f8d4; border: 1px solid #4caf50; color: #1b5e20; }
+.warn { background: #d4f8d4; border: 1px solid #c9a400; color: #ce6504; /* jaune orangé lisible */ }
+.err { background: #ffd4d4; border: 1px solid #d40000; color: #a30000; }
+
 /* ****FIN GNU ************** */
 
 </style>
@@ -685,16 +691,23 @@ function FormValider(z) {
     const msg = (z === 1 || z === 4)
       ? "Veuillez remplir tous les champs obligatoires (*)"
       : "Veuillez remplir tous les champs obligatoires (*) dans les 2 onglets";
-    alert(msg);
+    //alert(msg);
+    setTimeout(() => alert(msg), 0);
   }
 
   return valide;
 }
 
 
+
+
  //fonctions de GÉNÉRATION
 function AfficherAttribCit() {//oeuvre 1
     //alert("coucou")   ;
+    const lic_nouv = nettoyerLicence("choix_lic");
+    const lic_orig = nettoyerLicence("choix_lic0");
+
+    // alert (lic_nouv);
 
     switch (zone()) {
         case 1:
@@ -703,8 +716,11 @@ function AfficherAttribCit() {//oeuvre 1
         case 2:
         case 3:
             if (FormValider(3)) {
-            updateOutput();
-            updateOutput0();
+                testerCompatLic()//vérif si la licence de la nouvelle oeuvre est adéquate (autorisée)
+                //alert (res);
+                    updateOutput();
+                    updateOutput0();
+                
             }
             break;
         case 4:
@@ -714,6 +730,110 @@ function AfficherAttribCit() {//oeuvre 1
             // code if none of the cases match
     } 
 }   
+
+function nettoyerLicence(selectId) {
+  const select = document.getElementById(selectId);
+  const texte = select.options[select.selectedIndex].text;
+//alert( texte);
+  return texte
+    .replace(/^CC\s*/i, "")     // retire "CC "
+    .replace(/\s*4\.0$/i, "");  // retire " 4.0"
+}
+
+function testerCompatLic() {
+const A = nettoyerLicence("choix_lic0");
+const B = nettoyerLicence("choix_lic"); 
+
+ const res = verifierCompatibilite(A, B);
+ if (!res.msg) return;  //licences compatibles
+
+ //LICENCES NON COMPATIBLES : AFFICHE MESSAGE DE MODIFIER LA LICENCE
+  // Supprime l'alerte précédente si elle existe
+  const oldAlert = document.getElementById('customAlert');
+  if (oldAlert) oldAlert.remove();
+
+  // Création de l'alerte personnalisée
+  let alertBox = document.createElement('div');
+  alertBox.id = 'customAlert';
+  alertBox.style.position = 'fixed';
+  alertBox.style.top = '50%';
+  alertBox.style.left = '50%';
+  alertBox.style.transform = 'translate(-50%, -50%)';
+  alertBox.style.backgroundColor = '#fff';
+  alertBox.style.border = '2px solid #444';
+  alertBox.style.padding = '20px';
+  alertBox.style.zIndex = '10000';
+  alertBox.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+  alertBox.style.maxWidth = '90%';
+  alertBox.style.fontSize = '16px';
+  alertBox.style.borderRadius = '8px';
+
+alertBox.className = res.type;  // ajoute .ok, .warn ou .err
+alertBox.innerHTML = res.msg + '<br><br>';
+
+
+  let closeBtn = document.createElement('button');
+  closeBtn.textContent = 'Fermer';
+  closeBtn.style.padding = '8px 16px';
+  closeBtn.style.fontSize = '14px';
+  closeBtn.style.cursor = 'pointer';
+  closeBtn.style.border = 'none';
+  closeBtn.style.backgroundColor = '#4caf50';
+  closeBtn.style.color = '#fff';
+  closeBtn.style.borderRadius = '4px';
+
+  closeBtn.onclick = () => alertBox.remove();
+
+  alertBox.appendChild(closeBtn);
+  document.body.appendChild(alertBox);
+
+  return res.type === 'ok';
+ 
+}
+
+function verifierCompatibilite(licenceA, licenceB) {
+  const url = "https://creativecommons.org/faq/#if-i-derive-or-adapt-material-offered-under-a-creative-commons-license-which-cc-licenses-can-i-use:~:text=the%20next%20FAQ.)-,Adapter%E2%80%99s%20license%20chart,-The%20chart%20below";
+
+  // Ordre EXACT des colonnes et lignes selon ton tableau
+  const compat = {
+    "PD":        { "BY": "V", "BY-NC": "V", "BY-NC-ND": "V", "BY-NC-SA": "V", "BY-ND": "V", "BY-SA": "V", "PD": "" },
+    "BY":        { "BY": "V", "BY-NC": "V", "BY-NC-ND": "V", "BY-NC-SA": "V", "BY-ND": "V", "BY-SA": "V", "PD": "J" },
+    "BY-NC":     { "BY": "J", "BY-NC": "V", "BY-NC-ND": "V", "BY-NC-SA": "V", "BY-ND": "J", "BY-SA": "J", "PD": "J" },
+    "BY-NC-ND":  { "BY": "",  "BY-NC": "",  "BY-NC-ND": "",  "BY-NC-SA": "",  "BY-ND": "",  "BY-SA": "",  "PD": "" },
+    "BY-NC-SA":  { "BY": "",  "BY-NC": "",  "BY-NC-ND": "",  "BY-NC-SA": "V", "BY-ND": "",  "BY-SA": "",  "PD": "" },
+    "BY-ND":     { "BY": "",  "BY-NC": "",  "BY-NC-ND": "",  "BY-NC-SA": "",  "BY-ND": "",  "BY-SA": "",  "PD": "" },
+    "BY-SA":     { "BY": "",  "BY-NC": "",  "BY-NC-ND": "",  "BY-NC-SA": "",  "BY-ND": "",  "BY-SA": "V", "PD": "" }
+  };
+
+  // Validation des entrées
+ // if (!compat[licenceA] || !compat[licenceA][licenceB]) {
+ //   return "Licences inconnues ou non prises en charge.";
+ // }
+
+ //alert ('allo2')
+  const valeur = compat[licenceA][licenceB];
+  if (valeur === "") {
+    return {
+      type: "err",
+    //   msg: `Licence de la nouvelle œuvre non compatible avec la licence de l'œuvre d'origine : choisir une autre licence. Voir <a href="${url}" target="_blank">cette page</a>.`
+    msg: `La licence de la nouvelle œuvre <strong>(CC ${licenceB})</strong> est non compatible avec la licence <strong>(CC ${licenceA})</strong> de l'œuvre d'origine.<br><br>Veuillez choisir une autre licence pour la nouvelle oeuvre. Voir <a href="${url}" target="_blank">cette page</a>.`
+
+    };
+  }
+
+  if (valeur === "J") {
+    return {
+      type: "warn",
+      msg: `La licence de la nouvelle œuvre <strong>(CC ${licenceB})</strong> est permise, mais non recommandée, par rapport à la licence <strong>(CC ${licenceA})</strong> de l'œuvre d'origine.<br><br>Voir <a href="${url}" target="_blank">cette page</a>.`
+    };
+  }
+
+  return {
+    type: "ok",
+    //msg: "Licence de la nouvelle œuvre compatible avec la licence de l'œuvre d'origine."
+    msg: ""
+  };
+}
 
 
 // Fonction utilitaire : récupère la valeur, applique trim et encode
@@ -1045,10 +1165,10 @@ function openTab(LeTab, btn) {
                 <h2>Informations de saisie</h2>
 <!-- size="200" -->
                 *Titre de l'&#339;uvre</label>
-                <input type="text" id="titre" placeholder="Ex.: ma Super ressource">
+                <input type="text" id="titre" placeholder="Ex. : ma Super ressource">
 
                 <label for="titre_url" class="decale" >Lien vers l'&#339;uvre</label>
-                <input type="url" id="titre_url" class="decale" placeholder="Ex. https://www.enseigner.ulaval.ca/pedagogie/bonnes-pratiques-denseignement">
+                <input type="url" id="titre_url" class="decale" placeholder="Ex. : https://www.enseigner.ulaval.ca/pedagogie/bonnes-pratiques-denseignement">
 
                 <label for="createurs">*Identification des autrices et auteurs</label>
 
@@ -1071,8 +1191,8 @@ function openTab(LeTab, btn) {
   </thead>
   <tbody>
     <tr>
-      <td><input id="tabAuteursL1" type="text" placeholder="Ex. Dupont"></td>
-      <td><input type="text" placeholder="Ex. Josette"></td>
+      <td><input id="tabAuteursL1" type="text" placeholder="Ex. : Dupont"></td>
+      <td><input type="text" placeholder="Ex. : Josette"></td>
       <td><input type="checkbox"></td>
       <td class="add-row"><strong>+</strong></td>
     </tr>
@@ -1110,7 +1230,7 @@ function openTab(LeTab, btn) {
                 </div>        
                 <div>        
                     <label for="annee">*Ann&eacute;e de cr&eacute;ation</label>
-                    <input type="number" id="annee"  max="2050" min="1960" placeholder="Ex. 2025">
+                    <input type="number" id="annee"  max="2050" min="1960" placeholder="Ex. : 2025">
 
                 </div> 
             </div> 
@@ -1119,7 +1239,7 @@ function openTab(LeTab, btn) {
 <p></p>
             <div class="bloc-type2" id="blocAdjustIn">
             <label for="AdjustLabel">*Ajustements effectués</label>
-            <input type="text" id="AdjustIn" placeholder="Quelques mots changés, fautes corrigées, changement de couleur, etc.">
+            <input type="text" id="AdjustIn" placeholder="Ex. : Quelques mots changés, fautes corrigées, changement de couleur, etc.">
         </div>
 
         <!-- <div class="bloc-type" id="blocAdaptIn">
@@ -1211,7 +1331,7 @@ function openTab(LeTab, btn) {
 <p></p>
         <div class="bloc-type2" id="blocAdaptIn">
             <label for="AdaptLabel">*Adaptations effectuées : </label>
-            <input type="text" id="AdaptIn" placeholder="Ajout d'une section complète, changement de format, traduction, etc.">
+            <input type="text" id="AdaptIn" placeholder="Ex. : Ajout d'une section complète, changement de format, traduction, etc.">
         </div>
         </div> <!--fin class="panel"-->
 
@@ -1332,6 +1452,7 @@ function openTab(LeTab, btn) {
       <li><a href="https://fabriquerel.org/ressources/licences/" target="_blank">Les licences (fabriqueREL)</a></li>
       <li><a href="https://creativecommons.org/chooser/" target="_blank">Licence Chooser (Creative Commons)</a></li>
       <li><a href="https://creativecommons.org/mission/downloads/" target="_blank">CC icons (Creative Commons)</a></li>
+      <li><a href="https://creativecommons.org/faq/#if-i-derive-or-adapt-material-offered-under-a-creative-commons-license-which-cc-licenses-can-i-use:~:text=the%20next%20FAQ.)-,Adapter%E2%80%99s%20license%20chart,-The%20chart%20below" target="_blank">Conformité des licences CC d'oeuvres adaptées (Creative Commons)</a></li>
     </ul>
   </div>
 </div>
