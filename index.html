@@ -43,8 +43,13 @@ Note pour les francophones : Pour des raisons légales, cette licence n'est pour
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Attribution d'une &#339;uvre � Saisie &amp; Sortie</title>
+  <title>Attribution d'une &#339;uvre et citation APA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+ 
+  <!-- Flatpickr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.css">
+ 
  <style>
   :root { --border:#d0d7de; --muted:#555; --brand:#0078D7; }
   body { font-family: Arial, sans-serif; margin: 24px; line-height: 1.45; }
@@ -459,6 +464,39 @@ width: 100%;
 
 /* ****FIN GNU ************** */
 
+
+/* Calendrier Flatpickr CSS */
+ .container_cal {
+      background: white;
+      padding: 5px 10px;
+      border-radius: 8px;
+      max-width: 400px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 8px;
+    }
+    input[type="text"] {
+      padding: 4px;
+      font-size: 16px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+
+.label-jour-texte {
+    font-size: 0.85rem;
+    color: #777;
+}
+
 </style>
 
 
@@ -514,28 +552,6 @@ width: 100%;
 
   //FONCTIONS DES 3 OPTIONS
 
- function resetInputsExceptRadios() {
-  const bloc1 = document.getElementById("tab1");
-  bloc1.querySelectorAll("input").forEach(input => {
-  input.value = "";
-  });
-  const bloc2 = document.getElementById("tab2");
-  bloc2.querySelectorAll("input").forEach(input => {
-  input.value = "";
-  });
-    document.getElementById("choix_lic0").selectedIndex = 0;
-    document.getElementById("choix_lic").selectedIndex = 0;
-
-   document.getElementById("btnCopier1").style.display = 'none'; 
-   document.getElementById("btnCopier2").style.display = 'none'; 
-
-    // updateOutput();
-    // updateOutput0();
-    // InitialiserCit();
-    // validerTitreProfil();
-    // validerTitreProfil0();
-}
-
 function afficherEncadre() {
     document.querySelector('.container').style.display = 'grid';
     document.getElementById('generer').style.display = 'flex'; ;
@@ -558,19 +574,13 @@ function fonctionOriginale() {
     document.getElementById("btn2").style.display = "none";//bouton invisible
     document.getElementById('remplir').innerHTML= remplirTextBrut;
     AfficheAdjustAdapt();
-    // document.getElementById("Attrib1").style.display = "";            
-    // document.getElementById("Attrib2").style.display = "none";        
-    // document.getElementById("AdjustOutPrez").style.display = "none";
-    // document.getElementById("AdapTransit").style.display = "none";
-    // document.getElementById("AdaptOutPrez").style.display = "none";
-    // document.getElementById("blocAdjustIn").style.display = "none";
-    // document.getElementById("blocAdaptIn").style.display = "";   
     document.getElementById("Explications").textContent = "Vous êtes titulaire(s) des droits d'auteur sur cette oeuvre parce qu'elle est totalement originale."; 
     }
 
 function AfficheAdjustAdapt() {
   const z = zone();
-
+  //const z = 1;
+//alert(z);
  // table de correspondance : [Attrib3, Attrib4, blocAdjustIn, blocAdaptIn, AdapTransit, Attrib2]
 // "Attrib3";//Adjust
 // "Attrib4";//Adapt
@@ -637,21 +647,38 @@ el.style.display = "block";
 });
 }
 
+function getParamF() {
+    const params = new URLSearchParams(window.location.search);
+    const f = params.get("f");
+
+    // Vérifie si f est "1", "2" ou "3"
+    if (f === "1" || f === "2" || f === "4") {
+        return f;
+    }
+
+    // Par défaut
+    return "1";
+}
+
+
 function zone() {
-  const type = getSelectedType();
+  //const type = getSelectedType();
+  //alert (type);
+const param=getParamF(); //"", 1, 2 ou 4
+  //if (type === "originale") return 1;
 
-  if (type === "originale") return 1;
-
-  if (type === "adaptee") {
+  // if (type === "adaptee") {
+    if (param === "2") {
  //   const id = boutonActif?.id;   // safe access
-    if (boutonActif.id === "btn1") return 2;
-    if (boutonActif.id === "btn2") return 3;
-    return 0;
+    if (boutonActif.id === "btn1") return "2";
+    if (boutonActif.id === "btn2") return "3";
+   // return 0;
   }
 
-  if (type === "ajustee") return 4;
+  //if (type === "ajustee") return 4;
+  
 
-  return 0;
+  return param;
 }
 
 
@@ -662,7 +689,7 @@ function FormValider(z) {
       if (el) el.classList.remove("highlight");
     });
 
-  const baseChamps = ["titre", "tabAuteursL1", "annee", "choix_lic"];
+  const baseChamps = ["titre", "tabAuteursL1", "dateEvenement", "choix_lic"];
   const champsMap = {
     1: [...baseChamps],
     2: [...baseChamps, "titre0", "tabAuteurs0L1", "annee0", "choix_lic0", "AdaptIn"],
@@ -704,17 +731,24 @@ function FormValider(z) {
  //fonctions de GÉNÉRATION
 function AfficherAttribCit() {//oeuvre 1
     //alert("coucou")   ;
+    afficherDate();
     const lic_nouv = nettoyerLicence("choix_lic");
     const lic_orig = nettoyerLicence("choix_lic0");
+    
 
-    // alert (lic_nouv);
-
-    switch (zone()) {
-        case 1:
+    //alert (lic_nouv);
+const z=zone();
+//alert(z);
+    switch (z) {
+      //alert (z);
+        case "1":
+          //alert("cou");
             if (FormValider(1)) updateOutput();
             break;
-        case 2:
-        case 3:
+        case "2": 
+          //alert("cou");
+        case "3":
+            //alert("cou");
             if (FormValider(3)) {
                 testerCompatLic()//vérif si la licence de la nouvelle oeuvre est adéquate (autorisée)
                 //alert (res);
@@ -723,7 +757,7 @@ function AfficherAttribCit() {//oeuvre 1
                 
             }
             break;
-        case 4:
+        case "4":
             if (FormValider(4)) updateOutput();
             break;
         default:
@@ -849,10 +883,12 @@ const mappings = {
   1: [
     { inId: "titre", outId: "outTitre", defaultText: "Titre de l'œuvre" },
     { inId: "createurs_tableAuteurs", outId: "outCreateurs", defaultText: "Créateurs" },
-    { inId: "annee", outId: "outAnnee", defaultText: "Année" },
+    { inId: "valJourMois", outId: "outJourMois", defaultText: "Jour Mois" },    
+    { inId: "valAnnee", outId: "outAnnee", defaultText: "Année" },
 // Citation
     { inId: "createursAPA_tableAuteurs", outId: "outCreateursCit", defaultText: "Créateurs" },
-    { inId: "annee", outId: "outAnneeCit", defaultText: "Année" },
+    { inId: "valAnnee", outId: "outAnneeCit", defaultText: "Année" },
+    { inId: "valJourMois", outId: "outJourMoisCit", defaultText: "Année" }, 
     { inId: "titre", outId: "outTitreCit", defaultText: "" },
     { inId: "titre_url", outId: "outLinkCitText", defaultText: "" },    
     { inId: "organ", outId: "outEditCit", defaultText: "" }  
@@ -860,14 +896,16 @@ const mappings = {
   2: [
     { inId: "titre", outId: "outTitre", defaultText: "Titre de l'œuvre" },
     { inId: "createurs_tableAuteurs", outId: "outCreateurs", defaultText: "Créateurs" },
-    { inId: "annee", outId: "outAnnee", defaultText: "Année" },
+    { inId: "valJourMois", outId: "outJourMois", defaultText: "Jour Mois" }, 
+    { inId: "valAnnee", outId: "outAnnee", defaultText: "Année" },
  //Oeubre d'origine   
     { inId: "titre0", outId: "outTitre0", defaultText: "Titre de l'œuvre" },
     { inId: "createurs_tableAuteurs0", outId: "outCreateurs0", defaultText: "Créateurs" },
     { inId: "annee0", outId: "outAnnee0", defaultText: "Année" },
 // Citation
    { inId: "createursAPA_tableAuteurs", outId: "outCreateursCit", defaultText: "Créateurs" },
-    { inId: "annee", outId: "outAnneeCit", defaultText: "Année" },
+    { inId: "valAnnee", outId: "outAnneeCit", defaultText: "Année" },
+    { inId: "valJourMois", outId: "outJourMoisCit", defaultText: "Année" },     
     { inId: "titre", outId: "outTitreCit", defaultText: "" },
     { inId: "titre_url", outId: "outLinkCitText", defaultText: "" },    
     { inId: "organ", outId: "outEditCit", defaultText: "" },  
@@ -879,11 +917,13 @@ const mappings = {
   4: [
     { inId: "titre", outId: "outTitre", defaultText: "Titre de l'œuvre" },
     { inId: "createurs_tableAuteurs", outId: "outCreateurs", defaultText: "Créateurs" },
-    { inId: "annee", outId: "outAnnee", defaultText: "Année" },
+    { inId: "valJourMois", outId: "outJourMois", defaultText: "Jour Mois" },  
+    { inId: "valAnnee", outId: "outAnnee", defaultText: "Année" },
     { inId: "organ", outId: "outEditCit", defaultText: "Organisation éditrice" },
 // Citation
-   { inId: "createursAPA_tableAuteurs", outId: "outCreateursCit", defaultText: "Créateurs" },
-    { inId: "annee", outId: "outAnneeCit", defaultText: "Année" },
+    { inId: "createursAPA_tableAuteurs", outId: "outCreateursCit", defaultText: "Créateurs" },
+    { inId: "valAnnee", outId: "outAnneeCit", defaultText: "Année" },
+    { inId: "valJourMois", outId: "outJourMoisCit", defaultText: "Année" },     
     { inId: "titre", outId: "outTitreCit", defaultText: "" },
     { inId: "titre_url", outId: "outLinkCitText", defaultText: "" },    
     { inId: "organ", outId: "outEditCit", defaultText: "" },  
@@ -1106,6 +1146,7 @@ function openTab(LeTab, btn) {
   }
 }
 
+
   </script>
 
 </head>
@@ -1122,7 +1163,62 @@ function openTab(LeTab, btn) {
     <strong>Type&nbsp;:</strong>
 </div>
 
-  <div class="radio-group">
+<div class="radio-group">
+    <label>
+       <input type="radio" name="type" value="1" id="f1">
+          Originale
+    </label>
+
+    <label>
+      <input type="radio" name="type" value="2" id="f2">
+      Adaptée (dérivée)
+    </label>
+    
+    <label>
+      <input type="radio" name="type" value="4" id="f4">
+      Ajustée (légèrement modifiée)
+    </label>
+</div>
+
+<script>
+  // Associe chaque valeur à la fonction correspondante
+const fonctions = {
+    1: fonctionOriginale,
+    2: fonctionAdaptee,
+    4: fonctionAjustee
+};
+
+// Quand on clique sur un bouton radio → mettre f=1,2,4 dans l’URL
+document.querySelectorAll('input[name="type"]').forEach(radio => {
+    radio.addEventListener("change", () => {
+        const url = new URL(window.location.href);
+        url.searchParams.set("f", radio.value);
+        window.location.href = url.toString();
+    });
+});
+
+// Au chargement → lire f=1,2,4
+window.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    let f = params.get("f");
+
+    // Si aucun paramètre → f=1 par défaut
+    if (!f || !fonctions[f]) {
+        f = "1";
+    }
+
+    // Coche le bon bouton
+    const radio = document.querySelector(`input[name="type"][value="${f}"]`);
+    if (radio) radio.checked = true;
+
+    // Exécute la fonction correspondante
+    fonctions[f]();
+});
+
+</script>
+
+
+  <!-- <div class="radio-group">
     <label>
        <input type="radio" name="type" value="originale" checked onclick="fonctionOriginale();resetInputsExceptRadios();">
           Originale
@@ -1137,7 +1233,9 @@ function openTab(LeTab, btn) {
       <input type="radio" name="type" value="ajustee" onclick="fonctionAjustee();resetInputsExceptRadios();">
       Ajustée (légèrement modifiée)
     </label>
-  </div>
+  </div> -->
+
+
   <!-- <div class="explication" id="Explications">Bienvenue. Ce générateur vous permettra de créer une attribution Creative Commons conforme pour votre oeubre ainsi qu'une citation APA.</div> -->
      <div class="explication" id="Explications"></div>
 </div>
@@ -1220,19 +1318,75 @@ function openTab(LeTab, btn) {
                     <!-- <label for="choix_lic">Menu d�roulant :</label>--> 
                     <select id="choix_lic" >
                     <option value="">-- S&eacute;lectionnez --</option>
-                    <option value="1">CC BY 4.0</option>
-                    <option value="2" selected>CC BY-SA 4.0</option>
+                    <option value="1" selected>CC BY 4.0</option>
+                    <option value="2" >CC BY-SA 4.0</option>
                     <option value="3">CC BY-NC 4.0</option>
                     <option value="4">CC BY-NC-SA 4.0</option>
                     <option value="5">CC BY-ND 4.0</option>
                     <option value="6">CC BY-NC-ND 4.0</option>
                     </select>
                 </div>        
-                <div>        
+                <!-- <div>        
                     <label for="annee">*Ann&eacute;e de cr&eacute;ation</label>
                     <input type="number" id="annee"  max="2050" min="1960" placeholder="Ex. : 2025">
 
-                </div> 
+                </div>  -->
+
+        <div class="container_cal">
+                   <label for="dateEvenement">*Date de création :</label>
+                    <input type="text" id="dateEvenement" aria-describedby="dateHint" placeholder="Sélectionner une date">
+                    <!-- Case à cocher Jour --> 
+                     <div class="jour-wrapper">
+                      <!-- <label for="chkJour">Affiche jour<input type="checkbox" id="chkJour" checked></label> -->
+                        <label for="chkJour" id="blocJour">
+                          <span class="label-jour-texte">Affiche le jour</span>
+                          <input type="checkbox" id="chkJour" checked>
+                        </label>
+                    </div>
+
+                    <!-- <p id="dateHint">Sélectionnez une date dans le calendrier.</p>
+
+                    <button onclick="afficherDate()">Convertir la date</button> -->
+
+                    <p id="resultat" aria-live="polite" class="hidden">
+                        <!-- <span id="valJour"></span>
+                        <span id="valMoisLet"></span> -->
+                        <span id="valJourMois"></span>
+                        <span id="valAnnee"></span>
+                    </p>
+                   
+                </div>
+
+
+                    <script> //date du jour par défaut
+              window.addEventListener("DOMContentLoaded", () => {
+                  const input = document.getElementById("dateEvenement");
+
+                  // Récupère la date du jour au format AAAA-MM-JJ
+                  const today = new Date().toISOString().slice(0, 10);
+
+                  // Insère la date complète dans le champ
+                  input.value = today;
+              });
+              </script>
+          
+
+<script>
+document.getElementById("chkJour").addEventListener("change", function () {
+    const input = document.getElementById("dateEvenement");
+    if (!this.checked) {
+        input.value = input.value.substring(0, 7);
+        document.getElementById("blocJour").style.display = "none";
+    }
+});
+
+document.getElementById("dateEvenement").addEventListener("change", function () {
+        document.getElementById("blocJour").style.display = "flex";
+        document.getElementById("chkJour").checked = true;
+  });
+</script>
+                
+
             </div> 
                 <label for="organ">Organisation éditrice (si pas dans les auteurs)</label>
                 <input type="text" id="organ" placeholder="Université Laval">
@@ -1312,7 +1466,7 @@ function openTab(LeTab, btn) {
                     <!-- <label for="choix_lic">Menu d�roulant :</label>--> 
                     <select id="choix_lic0" >
                     <option value="">-- S&eacute;lectionnez --</option>
-                    <option value="1">CC BY 4.0</option>
+                    <option value="1" selected>CC BY 4.0</option>
                     <option value="2">CC BY-SA 4.0</option>
                     <option value="3">CC BY-NC 4.0</option>
                     <option value="4">CC BY-NC-SA 4.0</option>
@@ -1322,9 +1476,18 @@ function openTab(LeTab, btn) {
                 </div>        
                 <div>        
                     <label for="annee0">*Ann&eacute;e de cr&eacute;ation</label>
-                    <input type="number" id="annee0"  max="2050" min="1960" placeholder="Ex. 2025">
+                    <input type="number" id="annee0"  max="2050" min="1960" placeholder="Ex. : 2025">
 
                 </div> 
+
+                <script>
+                    window.addEventListener("DOMContentLoaded", () => {
+                    const anneeInput = document.getElementById("annee0");
+                    const currentYear = new Date().getFullYear();
+                    anneeInput.value = currentYear;
+                });
+                </script>
+         
             </div> 
                 <label for="organ0">Organisation éditrice (si pas dans les auteurs)</label>
                 <input type="text" id="organ0" placeholder="Université Laval">
@@ -1343,7 +1506,7 @@ function openTab(LeTab, btn) {
 
         <!--  ********************************************************** -->
         <!-- Colonne 2 : SORTIE -->
-    <div class="col2">
+    <div class="col2"> 
         <div class="title-out" id="AttribOutTitre">ATTRIBUTION RECOMMAND&Eacute;E<p></p>
         </div>
         
@@ -1368,7 +1531,7 @@ function openTab(LeTab, btn) {
                 &raquo;,&nbsp;
                 &copy; 
                 <span id="outCreateurs" class="quote">Créateurs</span>,&nbsp;
-                <span id="outAnnee">An</span>, est sous licence
+                <span id="outAnnee">An</span>&nbsp;(<span id="outJourMois">Jour Mois</span>), est sous licence
                     <a id="outLicenceLink"> <span id="outLicenseText" class="quote">&laquo; Licence à choisir &raquo;</span></a>,&nbsp;<span id="exception" class="out-line" >sauf indications contraires.</span>
                 </span>
             </span><!-- Attrib1 -->
@@ -1416,7 +1579,7 @@ function openTab(LeTab, btn) {
   <tr>
     <td>
             <span id="outCreateursCit" class="quote">Créateurs</span>&nbsp;
-            (<span id="outAnneeCit">An</span>).&nbsp;     
+            (<span id="outAnneeCit">An</span>,&nbsp;<span id="outJourMoisCit">Jour Mois</span>).&nbsp;     
             <span id="outTitreCit" class="quote">Titre de l'&#339;uvre</span>.&nbsp;
             <span id="outEditCit" class="quote">Organisation éditrice.</span>
             <!-- .&nbsp;             -->
@@ -1629,7 +1792,7 @@ window.addEventListener("click", (event) => {
 });
 
 
-//Aide &
+//Aide tableau des auteurs
 const trigger = document.querySelector('.tooltip-trigger');
 const tooltip = document.getElementById('tooltip');
 
@@ -1669,7 +1832,60 @@ function majLicence() {
 }
 
 
+</script>
 
+ <!-- Flatpickr JS -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
+
+  <script>
+    // Initialisation du calendrier en français
+    flatpickr("#dateEvenement", {
+      dateFormat: "Y-m-d",
+      locale: "fr"
+    });
+
+function convertirDate() {
+  const input = document.getElementById("dateEvenement");
+
+  if (!input.value) {
+    return null;
+  }
+
+  // const [anneeC, mois, jour] = input.value.split("-");
+  const parts = input.value.split("-"); // ["2026", "02"] ou ["2026", "02", "18"] 
+  const anneeC = parts[0]; 
+  const mois = parts[1]; 
+  const jour = parts.length === 3 ? parts[2] : ""; // ← ici la magie
+
+  const moisEnLettres = [
+    "janvier", "février", "mars", "avril", "mai", "juin",
+    "juillet", "août", "septembre", "octobre", "novembre", "décembre"
+  ][parseInt(mois, 10) - 1];
+
+  return { jour, moisEnLettres, anneeC };
+}
+
+function afficherDate() {
+  const resultat = convertirDate();
+
+  if (!resultat) {
+    //document.getElementById("resultat").textContent = "Veuillez choisir une date.";
+    return;
+  }
+
+//   document.getElementById("valJour").value = resultat.jour + " ";
+//   document.getElementById("valMoisLet").value = resultat.moisEnLettres + " ";
+ document.getElementById("valJourMois").value = enleverZeroJour(resultat.jour) + " " + resultat.moisEnLettres; 
+  document.getElementById("valAnnee").value = resultat.anneeC;
+   //document.getElementById("annee").value = resultat.anneeC;
+}
+
+function enleverZeroJour(jour) {
+    return jour ? jour.replace(/^0/, "") : "";
+}
+
+  </script>
 
 
 
@@ -1873,6 +2089,8 @@ document.querySelectorAll(".table-auteurs").forEach(table => {
   initTable(table.id);
 });
 </script>
+
+
 
 
     </div>
