@@ -902,33 +902,16 @@ if (texte.includes("public")) {return "PD"}
     .replace(/\s*4\.0$/i, "");  // retire " 4.0"
 }
 
-// function checkCC0(lic, z) {
-//   const url = "https://www.donneesquebec.ca/foire-aux-questions/#cco";
-//     if (!lic.includes("CC0")) return { type: "ok", msg: "" };
-
-//   const res = {
-//      type: "warn",
-//      msg: `Rappel : Avec la licence <strong>CC0</strong>, il n'y a pas d'obligation de vous citer puisque l'oeuvre est du domaine public.<br><br>Voir <a href="${url}" target="_blank">cette page</a>.`
-//     }
-//   //return messages[z] || { type: "ok", msg: "" }; //msg: "Licence de la nouvelle œuvre compatible est libre"
-//    AfficherCheckRes(res);
-// }
-
 function testerCompatLic(z) {
     const A = nettoyerLicence("choix_lic0");
     const B = nettoyerLicence("choix_lic"); 
-   // let res;
-
-    //alert(A);
-    // 1. Détermination du résultat
-//    if (z === 1 || z === 4) {
-  //      res = checkND(B, z);
-        // if res.msg="" then {res = checkND(B, z)};
-    //} else { // z = 2 ou 3
-    //if (z === 2 || z === 3) {
-     const res = verifierCompatibilite(A, B);
-    //}
+    const res = verifierCompatibilite(A, B);
     AfficherCheckRes(res);
+    if (z === 3 && res.type === "err") {
+        resetSelect("choix_lic");
+        const btn = document.querySelector('.tab-buttons button[data-tab="tab1"]');
+        openTab('tab1', btn);//focus sur tab1
+    }
   }
 
     function AfficherCheckRes(res){
@@ -958,25 +941,6 @@ function testerCompatLic(z) {
     return res.type === 'ok';
 }
 
-// function checkND(lic, z) {
-//   const url = "https://fabriquerel.org/wp-content/uploads/CC-BY_fabriqueREL2.pdf";
-//   if (!licenceA.includes("ND")) return { type: "ok", msg: "" };
-
-//   const messages = {
-//     1: {
-//       type: "warn",
-//       msg: `Rappel : La licence <strong>(CC ${lic})</strong> n'est pas une <strong>licence libre</strong> car elle ne permet pas la modification (ND = NoDerivatives).<br><br>Voir <a href="${url}" target="_blank">cette page</a>.`
-//     },
-//     4: {
-//       type: "err",
-//       msg: `La licence de l'oeuvre d'origine <strong>(CC ${lic})</strong> ne permet <strong>aucune modification, même mineure</strong> (ND = NoDerivatives).<br><br>Voir <a href="${url}" target="_blank">cette page</a>.`
-//     }
-//   };
-
-//   return messages[z] || { type: "ok", msg: "" }; //msg: "Licence de la nouvelle œuvre compatible est libre"
-// }
-   
-
 function verifierCompatibilite(licenceA, licenceB) {
   const url = "https://creativecommons.org/faq/#if-i-derive-or-adapt-material-offered-under-a-creative-commons-license-which-cc-licenses-can-i-use:~:text=the%20next%20FAQ.)-,Adapter%E2%80%99s%20license%20chart,-The%20chart%20below";
 
@@ -1000,10 +964,13 @@ function verifierCompatibilite(licenceA, licenceB) {
   const valeur = compat[licenceA][licenceB];
 
   if (valeur === "") {
-    let msg = `La licence de la nouvelle œuvre <strong>(CC ${licenceB})</strong> est non compatible avec la licence <strong>(CC ${licenceA})</strong> de l'œuvre d'origine.<br><br>Veuillez choisir une autre licence pour la nouvelle oeuvre. Voir <a href="${url}" target="_blank">cette page</a>.`;
+    let msg = `La licence de la nouvelle œuvre <strong>(CC ${licenceB})</strong> est incompatible avec la licence <strong>(CC ${licenceA})</strong> de l'œuvre d'origine.<br><br>Veuillez choisir une autre licence pour la nouvelle oeuvre. Voir <a href="${url}" target="_blank">cette page</a>.`;
     // 👉 Appliquer la transformation seulement si licenceB = "PD"
     if (licenceB === "PD") {
         msg = remplacerCCPD(msg);
+    }
+    if (licenceA.includes("ND")) {
+        msg =`La licence de la nouvelle œuvre <strong>(CC ${licenceB})</strong> est incompatible avec la licence <strong>(CC ${licenceA})</strong> de l'œuvre d'origine.<br><br>Vous ne pouvez modifier cette oeuvre pour en créer une nouvelle. Voir <a href="${url}" target="_blank">cette page</a>.`;
     }
     return {
         type: "err",
@@ -1569,22 +1536,36 @@ window.addEventListener("DOMContentLoaded", () => {
 
         if (res) {
             AfficherCheckRes(res);
+            if (z === "4" && res.type === "err") {
+                resetSelect("choix_lic");
+            }
         }
     });
 </script>
 
 
-                    <script> //date du jour par défaut
-              window.addEventListener("DOMContentLoaded", () => {
-                  const input = document.getElementById("dateEvenement");
 
-                  // Récupère la date du jour au format AAAA-MM-JJ
-                  const today = new Date().toISOString().slice(0, 10);
+<script>
+function resetSelect(id) {
+    const sel = document.getElementById(id);
+    if (sel) {
+        sel.value = "";
+    }
+}
+</script>
 
-                  // Insère la date complète dans le champ
-                  input.value = today;
-              });
-              </script>
+
+    <script> //date du jour par défaut
+window.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("dateEvenement");
+
+    // Récupère la date du jour au format AAAA-MM-JJ
+    const today = new Date().toISOString().slice(0, 10);
+
+    // Insère la date complète dans le champ
+    input.value = today;
+});
+</script>
           
 
 <script>
