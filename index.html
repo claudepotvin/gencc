@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 <!-- GÉNÉRATEUR D'ATTRIBUTION DE LICENCES CREATIVE COMMONS ET GÉNÉRATEUR DE CITATIONS APA
-v alpha-r
+v alpha-y
 Copyright (C) 2026 Claude Potvin (https://www.linkedin.com/in/claude-potvin-b506a471/)
 # Assistance à la programmation réalisée avec un robot conversationnel (Microsoft Copilot)
 Lien fonctionnel : https://claudepotvin.github.io/gencc/
@@ -69,7 +69,7 @@ Note pour les francophones : Pour des raisons légales, cette licence n'est pour
   top: 2px;   /* démarre sous la ligne horizontale */
   bottom: 0;
   left: 50%;
-  border-left: 2px solid #0078D7;
+  border-left: 1px solid #0078D7;
 }
 
 .panel { border: 0px solid var(--border); padding: 0 18px; }
@@ -78,10 +78,22 @@ Note pour les francophones : Pour des raisons légales, cette licence n'est pour
   h2 { margin: 0 0 10px; font-size: 1.1rem; letter-spacing: 0.02em; }
   .title-out { margin-top: 6px; font-weight: bold; font-size: 1rem; display: none; }/* caché au départ */
   label { display:block; margin-top: 10px; font-weight: 600; }
-  input[type="text"], input[type="url"], input[type="number"] {
+  /* input[type="text"], input[type="url"], input[type="number"] {
     width: 80%; padding: 8px 10px; margin-top: 6px;
     border: 1px solid var(--border); border-radius: 6px;
-  }
+  } */
+
+input[type="text"],
+input[type="url"],
+input[type="number"] {
+    width: 85%;
+    padding: 8px 10px;
+    margin-top: 6px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
 
   .help { color: var(--muted); font-size: 0.9em; margin-top: 6px; }
   .out-line { margin-top: 8px; font-size: 1rem; }
@@ -278,7 +290,7 @@ th:nth-child(4) {
   }
 
   .decale {
-  margin-left: 2cm; /* décale de 1 cm vers la droite */
+  margin-left: 1cm; /* décale de 1 cm vers la droite */
 }
  
 #titre { width: 89%; }
@@ -293,6 +305,7 @@ th:nth-child(4) {
 
 .form-flex > div {
   flex: 1; /* chaque bloc prend la moitié */
+  flex: 0 0 auto; /* empêche l’expansion */
 }
 
 /* ✅ Responsive */
@@ -328,9 +341,6 @@ width: 100%;
   bottom: 0;       /* colle en bas */
   left: 0;
 
- 
- 
- 
 }
 
 .footer {
@@ -467,23 +477,26 @@ width: 100%;
 
 /* Calendrier Flatpickr CSS */
  .container_cal {
+      flex: 0 0 auto; /* garde le bloc compact */ 
+      margin: 0 auto;
       background: white;
       padding: 5px 10px;
       border-radius: 8px;
-      max-width: 400px;
+      max-width: 150px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
+
     label {
       font-weight: bold;
       display: block;
       margin-bottom: 8px;
     }
-    input[type="text"] {
+    /* input[type="text"] {
       padding: 4px;
       font-size: 16px;
       width: 100%;
       box-sizing: border-box;
-    }
+    } */
     button {
       margin-top: 15px;
       padding: 10px 15px;
@@ -495,6 +508,67 @@ width: 100%;
 .label-jour-texte {
     font-size: 0.85rem;
     color: #777;
+}
+
+.col1 {
+    margin-left: -0.5cm;
+}
+
+select {
+    font-size: 15px;
+}
+
+
+/* ************************** */
+/* Alert box */
+/* Conteneur général */
+.alert-box {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 90%;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 10000;
+  background: #fff;
+  border: 2px solid #444;
+  font-size: 16px;
+}
+
+/* Variantes selon le type */
+.alert-ok {
+  border-color: #3a8f3a;
+}
+
+.alert-warn {
+  border-color: #d8a400;
+}
+
+.alert-err {
+  border-color: #c62828;
+}
+
+/* Contenu */
+.alert-content {
+  margin-bottom: 20px;
+}
+
+/* Bouton */
+.alert-close {
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  background-color: #4caf50;
+  color: #fff;
+  border-radius: 4px;
+}
+/* ************************** */
+
+.hidden {
+    display: none;
 }
 
 </style>
@@ -515,29 +589,40 @@ width: 100%;
     }
 
   const licences = {
-  "1": {
-    url: "https://creativecommons.org/licenses/by/4.0/deed.fr",
-    icon: "https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by.png"
+   "1": {
+    url: "https://creativecommons.org/publicdomain/zero/1.0/deed.fr",
+    //icon: "http://mirrors.creativecommons.org/presskit/buttons/88x31/png/cc-zero.png"
+    icon: "https://licensebuttons.net/p/zero/1.0/88x31.png"
   },
   "2": {
-    url: "https://creativecommons.org/licenses/by-sa/4.0/deed.fr",
-    icon: "https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png"
+    url: "https://creativecommons.org/licenses/by/4.0/deed.fr",
+    //icon: "https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by.png"
+    icon: "https://licensebuttons.net/l/by/3.0/88x31.png"
   },
   "3": {
-    url: "https://creativecommons.org/licenses/by-nc/4.0/",
-    icon: "https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc.png"
+    url: "https://creativecommons.org/licenses/by-sa/4.0/deed.fr",
+    //icon: "https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-sa.png"
+    icon: "https://licensebuttons.net/l/by-sa/3.0/88x31.png"
   },
   "4": {
-    url: "https://creativecommons.org/licenses/by-nc-sa/4.0/",
-    icon: "https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png"
+    url: "https://creativecommons.org/licenses/by-nc/4.0/deed.fr",
+    //icon: "https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc.png"
+    icon: "https://licensebuttons.net/l/by-nc/3.0/88x31.png"
   },
   "5": {
-    url: "https://creativecommons.org/licenses/by-nd/4.0/deed.fr",
-    icon: "https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nd.png"
+    url: "https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr",
+    //icon: "https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-sa.png"
+    icon: "https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png"
   },
   "6": {
-    url: "https://creativecommons.org/licenses/by-nc-nd/4.0/",
-    icon: "https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-nd.png"
+    url: "https://creativecommons.org/licenses/by-nd/4.0/deed.fr",
+   // icon: "https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nd.png"
+    icon: "https://licensebuttons.net/l/by-nd/3.0/88x31.png"
+  },
+  "7": {
+    url: "https://creativecommons.org/licenses/by-nc-nd/4.0/deed.fr",
+    //icon: "https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by-nc-nd.png"
+    icon: "https://licensebuttons.net/l/by-nc-nd/3.0/88x31.png"
   }
 };
 
@@ -550,7 +635,8 @@ width: 100%;
     const remplirTextBrut = "Remplir les champs du formulaire pour g&#233;n&#233;rer un libell&#233; d'attribution CC conforme."
     const remplirTexte2 = "Remplir les champs des <strong>2 onglets du formulaire</strong> pour g&#233;n&#233;rer un libell&#233; d'attribution CC conforme."
 
-  //FONCTIONS DES 3 OPTIONS
+   
+    //FONCTIONS DES 3 OPTIONS
 
 function afficherEncadre() {
     document.querySelector('.container').style.display = 'grid';
@@ -690,10 +776,11 @@ function FormValider(z) {
     });
 
   const baseChamps = ["titre", "tabAuteursL1", "dateEvenement", "choix_lic"];
+  const baseChamps0 = ["titre0", "tabAuteurs0L1", "annee0", "choix_lic0", "AdaptIn"];
   const champsMap = {
     1: [...baseChamps],
-    2: [...baseChamps, "titre0", "tabAuteurs0L1", "annee0", "choix_lic0", "AdaptIn"],
-    3: [...baseChamps, "titre0", "tabAuteurs0L1", "annee0", "choix_lic0", "AdaptIn"],
+    2: [...baseChamps, "titre0", ...baseChamps0],
+    3: [...baseChamps, "titre0", ...baseChamps0],
     4: [...baseChamps, "AdjustIn"]
   };
 
@@ -701,24 +788,64 @@ function FormValider(z) {
   const champs = (champsMap[z] || []).map(id => document.getElementById(id));
 
   champs.forEach(champ => {
-    if (!champ) return; // sécurité si un id est manquant
+    if (!champ) return;
     champ.classList.remove("highlight");
 
     if (!champ.value.trim()) {
       champ.classList.add("highlight");
       valide = false;
 
-      // 🔧 Ajout d’un écouteur pour enlever le highlight dès qu’on clique ou tape dedans
       champ.addEventListener("focus", () => champ.classList.remove("highlight"), { once: true });
       champ.addEventListener("input", () => champ.classList.remove("highlight"), { once: true });
     }
   });
 
+  // -----------------------------------------------------
+
+  if (z === 3) {//on est dans Adaptation
+  //Si tous les champs du tab 1 sont remplis et qu'au moins 1 champs de l'onglet 2 ne l'est pas, active-le
+  //Si tous les champs du tab 2 sont remplis et qu'au moins 1 champs de l'onglet 1 ne l'est pas, active-le
+  // -----------------------------------------------------
+    const tousBase = baseChamps.every(id => {
+        const el = document.getElementById(id);
+        return el && el.value.trim();
+    });
+
+    const tousBase0 = baseChamps0.every(id => {
+        const el = document.getElementById(id);
+        return el && el.value.trim();
+    });
+
+    const unBaseInvalide = baseChamps.some(id => {
+        const el = document.getElementById(id);
+        return !el || !el.value.trim();
+    });
+
+    const unBase0Invalide = baseChamps0.some(id => {
+        const el = document.getElementById(id);
+        return !el || !el.value.trim();
+    });
+
+    // 🔥 Condition 1 : tous baseChamps remplis + au moins 1 baseChamps0 vide
+    if (tousBase && unBase0Invalide) {
+   const btn = document.querySelector('.tab-buttons button[data-tab="tab2"]');
+   openTab('tab2', btn);
+    }
+
+    // 🔥 Condition 2 : tous baseChamps0 remplis + au moins 1 baseChamps vide
+    if (tousBase0 && unBaseInvalide) {
+     const btn = document.querySelector('.tab-buttons button[data-tab="tab1"]');
+    openTab('tab1', btn);
+    }
+    
+  }
+  // -----------------------------------------------------
+
   if (!valide) {
     const msg = (z === 1 || z === 4)
       ? "Veuillez remplir tous les champs obligatoires (*)"
       : "Veuillez remplir tous les champs obligatoires (*) dans les 2 onglets";
-    //alert(msg);
+
     setTimeout(() => alert(msg), 0);
   }
 
@@ -726,39 +853,38 @@ function FormValider(z) {
 }
 
 
-
-
  //fonctions de GÉNÉRATION
 function AfficherAttribCit() {//oeuvre 1
     //alert("coucou")   ;
     afficherDate();
-    const lic_nouv = nettoyerLicence("choix_lic");
-    const lic_orig = nettoyerLicence("choix_lic0");
+   // const lic_nouv = nettoyerLicence("choix_lic");
+   //const lic_orig = nettoyerLicence("choix_lic0");
     
 
-    //alert (lic_nouv);
+   // alert (lic_orig);
 const z=zone();
 //alert(z);
     switch (z) {
       //alert (z);
         case "1":
           //alert("cou");
-            if (FormValider(1)) updateOutput();
+            if (FormValider(1));updateOutput();
             break;
         case "2": 
           //alert("cou");
         case "3":
             //alert("cou");
             if (FormValider(3)) {
-                testerCompatLic()//vérif si la licence de la nouvelle oeuvre est adéquate (autorisée)
-                //alert (res);
+                //alert (lic_orig);
+                testerCompatLic(3)//vérif si la licence de la nouvelle oeuvre est adéquate (autorisée)
+                //alert (lic_orig);
                     updateOutput();
                     updateOutput0();
                 
             }
             break;
         case "4":
-            if (FormValider(4)) updateOutput();
+            if (FormValider(4));updateOutput();
             break;
         default:
             // code if none of the cases match
@@ -769,68 +895,94 @@ function nettoyerLicence(selectId) {
   const select = document.getElementById(selectId);
   const texte = select.options[select.selectedIndex].text;
 //alert( texte);
+if (texte.includes("public")) {return "PD"}
+
   return texte
     .replace(/^CC\s*/i, "")     // retire "CC "
     .replace(/\s*4\.0$/i, "");  // retire " 4.0"
 }
 
-function testerCompatLic() {
-const A = nettoyerLicence("choix_lic0");
-const B = nettoyerLicence("choix_lic"); 
+// function checkCC0(lic, z) {
+//   const url = "https://www.donneesquebec.ca/foire-aux-questions/#cco";
+//     if (!lic.includes("CC0")) return { type: "ok", msg: "" };
 
- const res = verifierCompatibilite(A, B);
- if (!res.msg) return;  //licences compatibles
+//   const res = {
+//      type: "warn",
+//      msg: `Rappel : Avec la licence <strong>CC0</strong>, il n'y a pas d'obligation de vous citer puisque l'oeuvre est du domaine public.<br><br>Voir <a href="${url}" target="_blank">cette page</a>.`
+//     }
+//   //return messages[z] || { type: "ok", msg: "" }; //msg: "Licence de la nouvelle œuvre compatible est libre"
+//    AfficherCheckRes(res);
+// }
 
- //LICENCES NON COMPATIBLES : AFFICHE MESSAGE DE MODIFIER LA LICENCE
-  // Supprime l'alerte précédente si elle existe
-  const oldAlert = document.getElementById('customAlert');
-  if (oldAlert) oldAlert.remove();
+function testerCompatLic(z) {
+    const A = nettoyerLicence("choix_lic0");
+    const B = nettoyerLicence("choix_lic"); 
+   // let res;
 
-  // Création de l'alerte personnalisée
-  let alertBox = document.createElement('div');
-  alertBox.id = 'customAlert';
-  alertBox.style.position = 'fixed';
-  alertBox.style.top = '50%';
-  alertBox.style.left = '50%';
-  alertBox.style.transform = 'translate(-50%, -50%)';
-  alertBox.style.backgroundColor = '#fff';
-  alertBox.style.border = '2px solid #444';
-  alertBox.style.padding = '20px';
-  alertBox.style.zIndex = '10000';
-  alertBox.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
-  alertBox.style.maxWidth = '90%';
-  alertBox.style.fontSize = '16px';
-  alertBox.style.borderRadius = '8px';
+    //alert(A);
+    // 1. Détermination du résultat
+//    if (z === 1 || z === 4) {
+  //      res = checkND(B, z);
+        // if res.msg="" then {res = checkND(B, z)};
+    //} else { // z = 2 ou 3
+    //if (z === 2 || z === 3) {
+     const res = verifierCompatibilite(A, B);
+    //}
+    AfficherCheckRes(res);
+  }
 
-alertBox.className = res.type;  // ajoute .ok, .warn ou .err
-alertBox.innerHTML = res.msg + '<br><br>';
+    function AfficherCheckRes(res){
+    if (!res.msg) return;  // licences compatibles → rien à afficher
 
+    // 2. Suppression d'une alerte précédente
+    const oldAlert = document.getElementById('customAlert');
+    if (oldAlert) oldAlert.remove();
 
-  let closeBtn = document.createElement('button');
-  closeBtn.textContent = 'Fermer';
-  closeBtn.style.padding = '8px 16px';
-  closeBtn.style.fontSize = '14px';
-  closeBtn.style.cursor = 'pointer';
-  closeBtn.style.border = 'none';
-  closeBtn.style.backgroundColor = '#4caf50';
-  closeBtn.style.color = '#fff';
-  closeBtn.style.borderRadius = '4px';
+    // 3. Création de l’alerte (sans style inline)
+    const alertBox = document.createElement('div');
+    alertBox.id = 'customAlert';
+    alertBox.className = `alert-box alert-${res.type}`; 
+    alertBox.innerHTML = `
+        <div class="alert-content">
+            ${res.msg}
+        </div>
+        <button class="alert-close">Fermer</button>
+    `;
 
-  closeBtn.onclick = () => alertBox.remove();
+    // 4. Gestion du bouton de fermeture
+    alertBox.querySelector('.alert-close').onclick = () => alertBox.remove();
 
-  alertBox.appendChild(closeBtn);
-  document.body.appendChild(alertBox);
+    // 5. Injection dans la page
+    document.body.appendChild(alertBox);
 
-  return res.type === 'ok';
- 
+    return res.type === 'ok';
 }
+
+// function checkND(lic, z) {
+//   const url = "https://fabriquerel.org/wp-content/uploads/CC-BY_fabriqueREL2.pdf";
+//   if (!licenceA.includes("ND")) return { type: "ok", msg: "" };
+
+//   const messages = {
+//     1: {
+//       type: "warn",
+//       msg: `Rappel : La licence <strong>(CC ${lic})</strong> n'est pas une <strong>licence libre</strong> car elle ne permet pas la modification (ND = NoDerivatives).<br><br>Voir <a href="${url}" target="_blank">cette page</a>.`
+//     },
+//     4: {
+//       type: "err",
+//       msg: `La licence de l'oeuvre d'origine <strong>(CC ${lic})</strong> ne permet <strong>aucune modification, même mineure</strong> (ND = NoDerivatives).<br><br>Voir <a href="${url}" target="_blank">cette page</a>.`
+//     }
+//   };
+
+//   return messages[z] || { type: "ok", msg: "" }; //msg: "Licence de la nouvelle œuvre compatible est libre"
+// }
+   
 
 function verifierCompatibilite(licenceA, licenceB) {
   const url = "https://creativecommons.org/faq/#if-i-derive-or-adapt-material-offered-under-a-creative-commons-license-which-cc-licenses-can-i-use:~:text=the%20next%20FAQ.)-,Adapter%E2%80%99s%20license%20chart,-The%20chart%20below";
 
   // Ordre EXACT des colonnes et lignes selon ton tableau
   const compat = {
-    "PD":        { "BY": "V", "BY-NC": "V", "BY-NC-ND": "V", "BY-NC-SA": "V", "BY-ND": "V", "BY-SA": "V", "PD": "" },
+    "PD":        { "BY": "V", "BY-NC": "V", "BY-NC-ND": "V", "BY-NC-SA": "V", "BY-ND": "V", "BY-SA": "V", "PD": "V" },
     "BY":        { "BY": "V", "BY-NC": "V", "BY-NC-ND": "V", "BY-NC-SA": "V", "BY-ND": "V", "BY-SA": "V", "PD": "J" },
     "BY-NC":     { "BY": "J", "BY-NC": "V", "BY-NC-ND": "V", "BY-NC-SA": "V", "BY-ND": "J", "BY-SA": "J", "PD": "J" },
     "BY-NC-ND":  { "BY": "",  "BY-NC": "",  "BY-NC-ND": "",  "BY-NC-SA": "",  "BY-ND": "",  "BY-SA": "",  "PD": "" },
@@ -846,27 +998,43 @@ function verifierCompatibilite(licenceA, licenceB) {
 
  //alert ('allo2')
   const valeur = compat[licenceA][licenceB];
-  if (valeur === "") {
-    return {
-      type: "err",
-    //   msg: `Licence de la nouvelle œuvre non compatible avec la licence de l'œuvre d'origine : choisir une autre licence. Voir <a href="${url}" target="_blank">cette page</a>.`
-    msg: `La licence de la nouvelle œuvre <strong>(CC ${licenceB})</strong> est non compatible avec la licence <strong>(CC ${licenceA})</strong> de l'œuvre d'origine.<br><br>Veuillez choisir une autre licence pour la nouvelle oeuvre. Voir <a href="${url}" target="_blank">cette page</a>.`
 
+  if (valeur === "") {
+    let msg = `La licence de la nouvelle œuvre <strong>(CC ${licenceB})</strong> est non compatible avec la licence <strong>(CC ${licenceA})</strong> de l'œuvre d'origine.<br><br>Veuillez choisir une autre licence pour la nouvelle oeuvre. Voir <a href="${url}" target="_blank">cette page</a>.`;
+    // 👉 Appliquer la transformation seulement si licenceB = "PD"
+    if (licenceB === "PD") {
+        msg = remplacerCCPD(msg);
+    }
+    return {
+        type: "err",
+        msg: msg
     };
   }
 
-  if (valeur === "J") {
+
+  if (valeur === "J") {  
+     let msg = `La licence de la nouvelle œuvre <strong>(CC ${licenceB})</strong> est permise, mais non recommandée, par rapport à la licence <strong>(CC ${licenceA})</strong> de l'œuvre d'origine.<br><br>Voir <a href="${url}" target="_blank">cette page</a>.`     
+      // 👉 Appliquer la transformation seulement si licenceB = "PD"
+    if (licenceB === "PD") {
+        msg = remplacerCCPD(msg);
+    }
     return {
       type: "warn",
-      msg: `La licence de la nouvelle œuvre <strong>(CC ${licenceB})</strong> est permise, mais non recommandée, par rapport à la licence <strong>(CC ${licenceA})</strong> de l'œuvre d'origine.<br><br>Voir <a href="${url}" target="_blank">cette page</a>.`
+      msg: msg
     };
-  }
+ }
 
   return {
     type: "ok",
     //msg: "Licence de la nouvelle œuvre compatible avec la licence de l'œuvre d'origine."
     msg: ""
-  };
+    };
+ 
+}
+
+
+function remplacerCCPD(msg) {//ajoute le 0 à CC pour mieur identifier
+    return msg.replace(/\bCC\s+PD\b/, "CC0 PD");
 }
 
 
@@ -1016,6 +1184,7 @@ const config = {
     outputs: ["outLicenceLink0"],
     handler: (val, outEl, sourceEl) => {
       const optionTexte = sourceEl.options[sourceEl.selectedIndex].text;
+     //alert(optionTexte);
       if (!val) return { href: "", text: optionTexte };
       return { href: licences[val].url || optionTexte, text: optionTexte };
     }
@@ -1063,6 +1232,7 @@ function updateOutput() {//oeuvre 1
     AjoutePointEspace("outLinkCitText");
     AjoutePointEspace("outEditCit");
     majLicence();
+       
     //Affiche boutons  "Copier"
     document.getElementById('btnCopier1').style.display = 'block';
     document.getElementById('btnCopier2').style.display = 'block';
@@ -1093,9 +1263,10 @@ function AjoutePointEspace(id) {
 
 
 
-
+ let dernierTab = null;
 
 function openTab(LeTab, btn) {
+ dernierTab=LeTab;
   // cacher tous les contenus
  boutonActif = btn; 
   //const LeType = getSelectedType(); //quel type d'oeuvre
@@ -1145,7 +1316,6 @@ function openTab(LeTab, btn) {
     }
   }
 }
-
 
   </script>
 
@@ -1218,25 +1388,7 @@ window.addEventListener("DOMContentLoaded", () => {
 </script>
 
 
-  <!-- <div class="radio-group">
-    <label>
-       <input type="radio" name="type" value="originale" checked onclick="fonctionOriginale();resetInputsExceptRadios();">
-          Originale
-    </label>
-
-      <label>
-      <input type="radio" name="type" value="adaptee" onclick="fonctionAdaptee();resetInputsExceptRadios();">
-      Adaptée (dérivée)
-    </label>
-    
-    <label>
-      <input type="radio" name="type" value="ajustee" onclick="fonctionAjustee();resetInputsExceptRadios();">
-      Ajustée (légèrement modifiée)
-    </label>
-  </div> -->
-
-
-  <!-- <div class="explication" id="Explications">Bienvenue. Ce générateur vous permettra de créer une attribution Creative Commons conforme pour votre oeubre ainsi qu'une citation APA.</div> -->
+   <!-- <div class="explication" id="Explications">Bienvenue. Ce générateur vous permettra de créer une attribution Creative Commons conforme pour votre oeubre ainsi qu'une citation APA.</div> -->
      <div class="explication" id="Explications"></div>
 </div>
 
@@ -1299,7 +1451,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 <!-- Sorties générées automatiquement mais cachées-->
  <div class="cache">
-<label>Créateurs :</label><br>
+  <label>Créateurs :</label><br>
 <input type="text" id="createurs_tableAuteurs" style="width:400px"><br><br>
 
 <label>Sortie APA :</label><br>
@@ -1310,7 +1462,7 @@ window.addEventListener("DOMContentLoaded", () => {
 <!-- ************************************** -->
 
                 <label for="createurs_profil" class="decale">URL ou adresse courriel de contact</label>
-                <input type="text" id="createurs_profil" class="decale" placeholder="http://sse.ulaval.ca ou sse@ulaval.ca">
+                <input type="text" id="createurs_profil" class="decale" Ex. : placeholder="Ex. : https://sse.ulaval.ca ou sse@ulaval.ca">
 <p></p>              
              <div class="form-flex"> 
                 <div>
@@ -1318,12 +1470,13 @@ window.addEventListener("DOMContentLoaded", () => {
                     <!-- <label for="choix_lic">Menu d�roulant :</label>--> 
                     <select id="choix_lic" >
                     <option value="">-- S&eacute;lectionnez --</option>
-                    <option value="1" selected>CC BY 4.0</option>
-                    <option value="2" >CC BY-SA 4.0</option>
-                    <option value="3">CC BY-NC 4.0</option>
-                    <option value="4">CC BY-NC-SA 4.0</option>
-                    <option value="5">CC BY-ND 4.0</option>
-                    <option value="6">CC BY-NC-ND 4.0</option>
+                    <option value="1">CC0 1.0 (Domaine public)</option>
+                    <option value="2" selected>CC BY 4.0</option>
+                    <option value="3" >CC BY-SA 4.0</option>
+                    <option value="4">CC BY-NC 4.0</option>
+                    <option value="5">CC BY-NC-SA 4.0</option>
+                    <option value="6">CC BY-ND 4.0</option>
+                    <option value="7">CC BY-NC-ND 4.0</option>
                     </select>
                 </div>        
                 <!-- <div>        
@@ -1356,6 +1509,69 @@ window.addEventListener("DOMContentLoaded", () => {
                     </p>
                    
                 </div>
+
+
+  <script>
+    const urlND = "https://fabriquerel.org/wp-content/uploads/CC-BY_fabriqueREL2.pdf";
+    const urlCC = "https://www.donneesquebec.ca/foire-aux-questions/#cco";
+
+    const z = zone(); // ta fonction existante
+//alert(z);
+    // Fonction qui retourne le bon message selon la licence et z
+    function getMessageLicence(val, z) {
+
+        if (val === 1) {
+            return {
+                msg: `Rappel : Avec la licence <strong>CC0</strong>, il n'y a pas d'obligation de vous citer puisque l’œuvre est du domaine public.<br><br>Voir <a href="${urlCC}" target="_blank">cette page</a>.`,
+                type: "warn"
+            };
+        }
+
+        if (val === 6) {
+            if (z === "1") {
+                return {
+                    msg: `Rappel : La licence <strong>CC BY-ND</strong> n'est pas une <strong>licence libre</strong> car elle ne permet pas la modification (ND = NoDerivatives).<br><br>Voir <a href="${urlND}" target="_blank">cette page</a>.`,
+                    type: "warn"
+                };
+            }
+            if (z === "4") {
+                return {
+                    msg: `La licence de l’œuvre d'origine <strong>CC BY-ND</strong> ne permet <strong>aucune modification, même mineure</strong> (ND = NoDerivatives).<br><br>Voir <a href="${urlND}" target="_blank">cette page</a>.`,
+                    type: "err"
+                };
+            }
+        }
+
+        if (val === 7) {
+            if (z === "1") {
+                return {
+                    msg: `Rappel : La licence <strong>CC BY-NC-ND</strong> n'est pas une <strong>licence libre</strong> car elle ne permet pas la modification (ND = NoDerivatives).<br><br>Voir <a href="${urlND}" target="_blank">cette page</a>.`,
+                    type: "warn"
+                };
+            }
+            if (z === "4") {
+              //alert("4");
+                return {
+                    msg: `La licence de l’œuvre d'origine <strong>CC BY-NC-ND</strong> ne permet <strong>aucune modification, même mineure</strong> (ND = NoDerivatives).<br><br>Voir <a href="${urlND}" target="_blank">cette page</a>.`,
+                    type: "err"
+                };
+            }
+        }
+
+        return null; // aucun message
+    }
+
+    // Écouteur sur le menu déroulant
+    document.getElementById("choix_lic").addEventListener("change", function () {
+        const val = Number(this.value);
+       // alert(val);
+        const res = getMessageLicence(val, z);
+
+        if (res) {
+            AfficherCheckRes(res);
+        }
+    });
+</script>
 
 
                     <script> //date du jour par défaut
@@ -1458,7 +1674,7 @@ document.getElementById("dateEvenement").addEventListener("change", function () 
                 <input type="text" id="createurs0" placeholder="Ex. Marie Tremblay"> -->
 
                 <label for="createurs_profil" class="decale">URL ou adresse courriel de contact</label>
-                <input type="text" id="createurs_profil0" class="decale" placeholder="http://sse.ulaval.ca ou sse@ulaval.ca">
+                <input type="text" id="createurs_profil0" class="decale" Ex. : Ex. : placeholder="https://sse.ulaval.ca ou sse@ulaval.ca">
 <p></p>              
              <div class="form-flex"> 
                 <div>
@@ -1466,12 +1682,13 @@ document.getElementById("dateEvenement").addEventListener("change", function () 
                     <!-- <label for="choix_lic">Menu d�roulant :</label>--> 
                     <select id="choix_lic0" >
                     <option value="">-- S&eacute;lectionnez --</option>
-                    <option value="1" selected>CC BY 4.0</option>
-                    <option value="2">CC BY-SA 4.0</option>
-                    <option value="3">CC BY-NC 4.0</option>
-                    <option value="4">CC BY-NC-SA 4.0</option>
-                    <option value="5">CC BY-ND 4.0</option>
-                    <option value="6">CC BY-NC-ND 4.0</option>
+                    <option value="1">CC0 1.0 (Domaine public)</option>
+                    <option value="2" selected>CC BY 4.0</option>
+                    <option value="3" >CC BY-SA 4.0</option>
+                    <option value="4">CC BY-NC 4.0</option>
+                    <option value="5">CC BY-NC-SA 4.0</option>
+                    <option value="6">CC BY-ND 4.0</option>
+                    <option value="7">CC BY-NC-ND 4.0</option>
                     </select>
                 </div>        
                 <div>        
@@ -1515,7 +1732,7 @@ document.getElementById("dateEvenement").addEventListener("change", function () 
 
 <table class="cc-table">
   <tr>
-    <td class="cell-icon"> <div id="bloc_cc"><a id="cc_link" href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">
+    <td class="cell-icon"> <div id="bloc_cc"><a id="cc_link" href="https://creativecommons.org/licenses/by/4.0/deed.fr" target="_blank" rel="noopener">
             <span >
                 <img id="cc_img" class="cc-50" src="https://mirrors.creativecommons.org/presskit/buttons/88x31/png/by.png"
                     alt="Licence Creative Commons BY">
@@ -1529,8 +1746,8 @@ document.getElementById("dateEvenement").addEventListener("change", function () 
                 &laquo;
                 <span id="outTitre" class="quote">Titre de l'&#339;uvre</span>
                 &raquo;,&nbsp;
-                &copy; 
-                <span id="outCreateurs" class="quote">Créateurs</span>,&nbsp;
+               <span id="copysymb">&copy;</span><span id="par" class="hidden">par</span>  
+                <span id="outCreateurs" class="quote">Créateurs</span><span id="virgEsp">,&nbsp;</span>
                 <span id="outAnnee">An</span>&nbsp;(<span id="outJourMois">Jour Mois</span>), est sous licence
                     <a id="outLicenceLink"> <span id="outLicenseText" class="quote">&laquo; Licence à choisir &raquo;</span></a>,&nbsp;<span id="exception" class="out-line" >sauf indications contraires.</span>
                 </span>
@@ -1554,10 +1771,6 @@ document.getElementById("dateEvenement").addEventListener("change", function () 
             <span id="Attrib3"><span id="AdjustOutPrez" class="quote"><br> / <strong>Ajustements effectués : </strong><span id="AdjustOut" class="quote"></span></span></span>
             <span id="Attrib4"><span id="AdaptOutPrez" class="quote"><br> / <strong>Adaptations effectuées : </strong><span id="AdaptOut" class="quote"></span></span></span>
             <!-- <span id="Attrib3"><br> / <strong>Ajustementss effectuées : </strong><span id="AdjustOut" class="quote">test    </span></span> -->
-
-
-
-
     </td>
   </tr>
 </table>
@@ -1661,7 +1874,7 @@ qu'en anglais.
 
 
   <script>
-//ouvre Étpe 1 par défaut : Originale / Tab1
+//ouvre Étape 1 par défaut : Originale / Tab1
 const btn = document.querySelector('.tab-buttons button[data-tab="tab1"]'); // quel tab?
 
 fonctionOriginale();
@@ -1703,64 +1916,19 @@ function updateURLTitreCitation() {
 
 
 }    
+
+function hideSpan(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.add("hidden");
+}
+
+function showSpan(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove("hidden");
+}
+
  
-function AfficheLicence() {
-  const select = document.getElementById("choix_lic");
-  const valeur = select.value;                          // numéro choisi
-  const optionTexte = select.options[select.selectedIndex].text; // libellé
 
-  const outLicenceLink = document.getElementById("outLicenceLink");
-  const outLicenceLinkCit = document.getElementById("outLicenceLinkCit");
-
-  // Mettre à jour le texte des deux liens
-  [outLicenceLink, outLicenceLinkCit].forEach(link => {
-    link.textContent = optionTexte;
-  });
-
-  if (valeur) {
-    // Ici tu peux utiliser un tableau licences_URL[valeur] si tu veux une vraie URL
-    const url = optionTexte || ""; // ⚠️ remplacer par licences_URL[valeur] si disponible
-
-    [outLicenceLink, outLicenceLinkCit].forEach(link => {
-      link.href = url;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-    });
-  } else {
-    [outLicenceLink, outLicenceLinkCit].forEach(link => {
-      link.removeAttribute("href");
-    });
-  }
-}
-
-function AfficheLicence0() {
-  const select = document.getElementById("choix_lic0");
-  const valeur = select.value;                          // numéro choisi
-  const optionTexte = select.options[select.selectedIndex].text; // libellé
-
-  const outLicenceLink0= document.getElementById("outLicenceLink0");
-  const outLicenceLinkCit0 = document.getElementById("outLicenceLinkCit0");
-
-  // Mettre à jour le texte des deux liens
-  [outLicenceLink0].forEach(link => {
-    link.textContent = optionTexte;
-  });
-
-  if (valeur) {
-    // Ici tu peux utiliser un tableau licences_URL[valeur] si tu veux une vraie URL
-    const url = optionTexte || ""; // ⚠️ remplacer par licences_URL[valeur] si disponible
-
-    [outLicenceLink0].forEach(link => {
-      link.href = url;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-    });
-  } else {
-    [outLicenceLink0].forEach(link => {
-      link.removeAttribute("href");
-    });
-  }
-}
 //Toggle Ref
 document.getElementById("toggleRef").addEventListener("click", function() {
   const ref = document.getElementById("ref");
@@ -1813,6 +1981,21 @@ document.addEventListener('click', (e) => {
 function majLicence() {
     const select = document.getElementById("choix_lic");
     const value = select.value;
+
+ // Si PD, cache le symcole CC et le nom de l'auteur 
+  if (value==="1"){
+    //alert("etest");
+     hideSpan("copysymb");
+     showSpan("par");// remplace symb copyright
+    // hideSpan("outCreateurs");
+    // hideSpan("virgEsp");
+  }
+  else {
+     showSpan("copysymb");
+     hideSpan("par");     
+    // showSpan("outCreateurs");
+    // showSpan("virgEsp");
+  }
 
     const link = document.getElementById("cc_link");
     const img = document.getElementById("cc_img");
