@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 <!-- GÉNÉRATEUR D'ATTRIBUTION DE LICENCES CREATIVE COMMONS ET GÉNÉRATEUR DE CITATIONS APA
-v alpha-y
+v beta-b  - 2026.02.13
 Copyright (C) 2026 Claude Potvin (https://www.linkedin.com/in/claude-potvin-b506a471/)
 # Assistance à la programmation réalisée avec un robot conversationnel (Microsoft Copilot)
 Lien fonctionnel : https://claudepotvin.github.io/gencc/
@@ -510,6 +510,12 @@ width: 100%;
     color: #777;
 }
 
+.soustexte {
+    font-size: 0.85rem;
+    color: #777;
+    text-align: center;
+}
+
 .col1 {
     margin-left: -0.5cm;
 }
@@ -721,6 +727,8 @@ function AfficheAdjustAdapt() {
     document.getElementById('remplir').innerHTML= remplirTextBrut;
     AfficheAdjustAdapt();         
     document.getElementById("Explications").textContent = "Vous n'avez modifié que légèrement une oeuvre, et donc vous n'êtes pas titulaire(s) des droits d'auteur. Vous devez attribuer l'oeuvre aux auteurs d'origine, et préciser les ajustements effectués."; 
+    document.getElementById("dorigineTitre").style.display = "inline-block";//texte visible  
+    document.getElementById("dorigineAuteurs").style.display = "inline-block";//texte visible   
 }
 
 function getSelectedType() {
@@ -1199,6 +1207,7 @@ function updateOutput() {//oeuvre 1
     AjoutePointEspace("outLinkCitText");
     AjoutePointEspace("outEditCit");
     majLicence();
+    AjouteSaufException();
        
     //Affiche boutons  "Copier"
     document.getElementById('btnCopier1').style.display = 'block';
@@ -1215,6 +1224,7 @@ function updateOutput0() { //oeuvre 0 = source
        AjoutePointEspace("outEditCit");        
 }
 
+
 function AjoutePointEspace(id) {
   const el = document.getElementById(id);
   if (el) {
@@ -1228,6 +1238,13 @@ function AjoutePointEspace(id) {
   }
 }
 
+function AjouteSaufException() {
+    const input = document.getElementById("collect");
+    const exception = document.getElementById("exception");
+
+    // Affiche ou masque immédiatement selon l'état actuel
+    exception.style.display = input.checked ? "inline" : "none";
+}
 
 
  let dernierTab = null;
@@ -1381,13 +1398,13 @@ window.addEventListener("DOMContentLoaded", () => {
                 <div class="panel">
                 <h2>Informations de saisie</h2>
 <!-- size="200" -->
-                *Titre de l'&#339;uvre</label>
+                <label for="titre">*Titre de l'&#339;uvre <span id="dorigineTitre" class="hidden"> (d'origine)</span></label>
                 <input type="text" id="titre" placeholder="Ex. : ma Super ressource">
 
                 <label for="titre_url" class="decale" >Lien vers l'&#339;uvre</label>
                 <input type="url" id="titre_url" class="decale" placeholder="Ex. : https://www.enseigner.ulaval.ca/pedagogie/bonnes-pratiques-denseignement">
 
-                <label for="createurs">*Identification des autrices et auteurs</label>
+                <label for="createurs">*Identification des autrices et auteurs <span id="dorigineAuteurs" class="hidden"> (d'origine)</span></label></label>
 
 
 <!-- ***************************************** -->
@@ -1453,30 +1470,36 @@ window.addEventListener("DOMContentLoaded", () => {
                 </div>  -->
 
         <div class="container_cal">
-                   <label for="dateEvenement">*Date de création :</label>
-                    <input type="text" id="dateEvenement" aria-describedby="dateHint" placeholder="Sélectionner une date">
-                    <!-- Case à cocher Jour --> 
-                     <div class="jour-wrapper">
-                      <!-- <label for="chkJour">Affiche jour<input type="checkbox" id="chkJour" checked></label> -->
-                        <label for="chkJour" id="blocJour">
-                          <span class="label-jour-texte">Affiche le jour</span>
-                          <input type="checkbox" id="chkJour" checked>
-                        </label>
-                    </div>
+            <label for="dateEvenement">*Date de création :</label>
+            <input type="text" id="dateEvenement" aria-describedby="dateHint" placeholder="Sélectionner une date">
+            <!-- Case à cocher Jour --> 
+              <div class="jour-wrapper">
+              <!-- <label for="chkJour">Affiche jour<input type="checkbox" id="chkJour" checked></label> -->
+                <label for="chkJour" id="blocJour">
+                  <span class="label-jour-texte">Affiche le jour</span>
+                  <input type="checkbox" id="chkJour" checked>
+                </label>
+            </div>
 
-                    <!-- <p id="dateHint">Sélectionnez une date dans le calendrier.</p>
+            <!-- <p id="dateHint">Sélectionnez une date dans le calendrier.</p>
 
-                    <button onclick="afficherDate()">Convertir la date</button> -->
+            <button onclick="afficherDate()">Convertir la date</button> -->
 
-                    <p id="resultat" aria-live="polite" class="hidden">
-                        <!-- <span id="valJour"></span>
-                        <span id="valMoisLet"></span> -->
-                        <span id="valJourMois"></span>
-                        <span id="valAnnee"></span>
-                    </p>
-                   
-                </div>
+            <p id="resultat" aria-live="polite" class="hidden">
+                <!-- <span id="valJour"></span>
+                <span id="valMoisLet"></span> -->
+                <span id="valJourMois"></span>
+                <span id="valAnnee"></span>
+            </p>       
+        </div>
 
+        <div class="">
+              <label for="collect" id="blocJour">
+                <span>Collection</span>
+                <input type="checkbox" id="collect" unchecked>
+                <br><span class="soustexte">Si l'oeuvre contient<br>des exceptions, affiche <br>"sauf indications contraires"</span>
+              </label>
+          </div>
 
   <script>
     const urlND = "https://fabriquerel.org/wp-content/uploads/CC-BY_fabriqueREL2.pdf";
@@ -1586,7 +1609,7 @@ document.getElementById("dateEvenement").addEventListener("change", function () 
 
             </div> 
                 <label for="organ">Organisation éditrice (si pas dans les auteurs)</label>
-                <input type="text" id="organ" placeholder="Université Laval">
+                <input type="text" id="organ" placeholder="Ex. : Cégep ABC / Université XYZ / ">
 <p></p>
             <div class="bloc-type2" id="blocAdjustIn">
             <label for="AdjustLabel">*Ajustements effectués</label>
@@ -1615,7 +1638,7 @@ document.getElementById("dateEvenement").addEventListener("change", function () 
                 <label for="titre">*Titre de l'&#339;uvre</label>
                 <input type="text" id="titre0" placeholder="Ex.: ma Super ressource">
 
-                  <label for="titre_url0 class="decale" >Lien vers l'&#339;uvre</label>
+                  <label for="titre_url0" class="decale" >Lien vers l'&#339;uvre</label>
                 <input type="url" id="titre_url0" class="decale" placeholder="Ex. https://www.enseigner.ulaval.ca/pedagogie/bonnes-pratiques-denseignement">
 
 <!-- ****************************************** -->
@@ -1730,7 +1753,7 @@ document.getElementById("dateEvenement").addEventListener("change", function () 
                <span id="copysymb">&copy;</span><span id="par" class="hidden">par</span>  
                 <span id="outCreateurs" class="quote">Créateurs</span><span id="virgEsp">,&nbsp;</span>
                 <span id="outAnnee">An</span>&nbsp;(<span id="outJourMois">Jour Mois</span>), est sous licence
-                    <a id="outLicenceLink"> <span id="outLicenseText" class="quote">&laquo; Licence à choisir &raquo;</span></a>,&nbsp;<span id="exception" class="out-line" >sauf indications contraires.</span>
+                    <a id="outLicenceLink"> <span id="outLicenseText" class="quote">&laquo; Licence à choisir &raquo;</span></a><span id="exception" class="out-line">,&nbsp;sauf indications contraires</span>.
                 </span>
             </span><!-- Attrib1 -->
 
